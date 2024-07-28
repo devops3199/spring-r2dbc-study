@@ -4,5 +4,5 @@ import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
-public record Shop(@Id Integer id, String name, String category, String status, LocalDateTime createdAt) {
+public record Shop(@Id Integer id, String name, String status, LocalDateTime createdAt) {
 }
