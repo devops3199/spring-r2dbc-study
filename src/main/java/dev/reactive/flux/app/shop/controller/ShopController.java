@@ -4,6 +4,7 @@ import dev.reactive.flux.app.shop.dto.CreateShopDto;
 import dev.reactive.flux.app.shop.model.Shop;
 import dev.reactive.flux.app.shop.service.ShopService;
 import dev.reactive.flux.common.dto.APIResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,7 @@ public class ShopController {
     }
 
     @PostMapping("/shops")
-    public Mono<APIResponse<Shop>> createShop(@RequestBody CreateShopDto createShopDto) {
+    public Mono<APIResponse<Shop>> createShop(@Valid @RequestBody CreateShopDto createShopDto) {
         return shopService.createShop(createShopDto)
                 .map(shop -> APIResponse.<Shop>builder()
                         .statusCode(201)
