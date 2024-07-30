@@ -21,7 +21,7 @@ public class ShopService {
         return shopRepository.findAll().collectList();
     }
 
-    public Mono<Shop> getShop(final Integer id) {
+    public Mono<Shop> getShopById(final Integer id) {
         return shopRepository.findById(id);
     }
 

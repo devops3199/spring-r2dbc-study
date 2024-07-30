@@ -29,7 +29,7 @@ public class ShopController {
 
     @GetMapping("/shops/{id}")
     public Mono<APIResponse<Shop>> getShop(@PathVariable Integer id) {
-        return shopService.getShop(id)
+        return shopService.getShopById(id)
                 .map(shops -> APIResponse.<Shop>builder()
                         .statusCode(200)
                         .message("success")
