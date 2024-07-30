@@ -1,15 +1,17 @@
 package dev.reactive.flux.app.advertisement.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import dev.reactive.flux.app.advertisement.model.Advertisement;
 import dev.reactive.flux.app.advertisement.model.AdvertisementCategory;
 import dev.reactive.flux.app.advertisement.model.AdvertisementStatus;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
 public record CreateAdvertisementDto(
-        @NotBlank(message = "Shop ID 필수")
+        @Min(value = 1, message = "Shop ID 필수")
         Integer shopId,
         @NotBlank(message = "광고 이름 필수")
         String name,
