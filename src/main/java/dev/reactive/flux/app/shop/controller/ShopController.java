@@ -6,10 +6,7 @@ import dev.reactive.flux.app.shop.service.ShopService;
 import dev.reactive.flux.common.dto.APIResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -24,6 +21,16 @@ public class ShopController {
     public Mono<APIResponse<List<Shop>>> getShops() {
         return shopService.getShops()
                 .map(shops -> APIResponse.<List<Shop>>builder()
+                        .statusCode(200)
+                        .message("success")
+                        .data(shops)
+                        .build());
+    }
+
+    @GetMapping("/shops/{id}")
+    public Mono<APIResponse<Shop>> getShop(@PathVariable Integer id) {
+        return shopService.getShop(id)
+                .map(shops -> APIResponse.<Shop>builder()
                         .statusCode(200)
                         .message("success")
                         .data(shops)
