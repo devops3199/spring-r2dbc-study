@@ -8,6 +8,7 @@ import dev.reactive.flux.common.error.APIException;
 import dev.reactive.flux.common.error.ErrorMessage;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -41,6 +42,7 @@ public class AdvertisementController {
     }
 
     @PostMapping("/advertisements")
+    @ResponseStatus(HttpStatus.CREATED)
     public Mono<APIResponse<Advertisement>> createAdvertisement(@Valid @RequestBody CreateAdvertisementDto createAdvertisementDto) {
         return advertisementService.createAdvertisement(createAdvertisementDto)
                 .map(advertisement -> APIResponse.<Advertisement>builder()
