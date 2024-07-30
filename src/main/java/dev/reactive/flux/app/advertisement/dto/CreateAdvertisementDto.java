@@ -22,8 +22,8 @@ public record CreateAdvertisementDto(
         @NotNull(message = "광고 시작일")
         LocalDateTime startedAt,
         @NotNull(message = "광고 종료일")
-        LocalDateTime endedAt
-) {
+        LocalDateTime endedAt) {
+
     public Advertisement toAdvertisement() {
         return Advertisement.builder()
                 .shopId(shopId)
