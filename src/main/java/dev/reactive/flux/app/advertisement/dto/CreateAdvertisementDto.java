@@ -1,6 +1,5 @@
 package dev.reactive.flux.app.advertisement.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import dev.reactive.flux.app.advertisement.model.Advertisement;
 import dev.reactive.flux.app.advertisement.model.AdvertisementCategory;
 import dev.reactive.flux.app.advertisement.model.AdvertisementStatus;

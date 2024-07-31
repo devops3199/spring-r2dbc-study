@@ -3,6 +3,8 @@ package dev.reactive.flux.app.advertisement.service;
 import dev.reactive.flux.app.advertisement.dto.CreateAdvertisementDto;
 import dev.reactive.flux.app.advertisement.model.Advertisement;
 import dev.reactive.flux.app.advertisement.repository.AdvertisementRepository;
+import dev.reactive.flux.common.error.APIException;
+import dev.reactive.flux.common.error.ErrorMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,10 +24,20 @@ public class AdvertisementService {
     }
 
     public Mono<Advertisement> getAdvertisementById(final Integer id) {
-        return advertisementRepository.findById(id);
+        return advertisementRepository.findById(id)
+                .switchIfEmpty(Mono.error(() -> new APIException(ErrorMessage.ADVERTISEMENT_NOT_FOUND)));
     }
 
     public Mono<Advertisement> createAdvertisement(final CreateAdvertisementDto dto) {
         return advertisementRepository.save(dto.toAdvertisement());
+    }
+
+    public Mono<Advertisement> offAdvertisement(final Integer id) {
+        return advertisementRepository.findById(id)
+                .switchIfEmpty(Mono.error(() -> new APIException(ErrorMessage.ADVERTISEMENT_NOT_FOUND)))
+                .flatMap(advertisement -> {
+                    var modified = advertisement.off();
+                    return advertisementRepository.save(modified);
+                });
     }
 }

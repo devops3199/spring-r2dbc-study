@@ -25,7 +25,8 @@ public class ShopService {
     }
 
     public Mono<Shop> getShopById(final Integer id) {
-        return shopRepository.findById(id);
+        return shopRepository.findById(id)
+                .switchIfEmpty(Mono.error(() -> new APIException(ErrorMessage.SHOP_NOT_FOUND)));
     }
 
     public Mono<Shop> createShop(final CreateShopDto dto) {

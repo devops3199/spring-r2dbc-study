@@ -4,8 +4,6 @@ import dev.reactive.flux.app.advertisement.dto.CreateAdvertisementDto;
 import dev.reactive.flux.app.advertisement.model.Advertisement;
 import dev.reactive.flux.app.advertisement.service.AdvertisementService;
 import dev.reactive.flux.common.dto.APIResponse;
-import dev.reactive.flux.common.error.APIException;
-import dev.reactive.flux.common.error.ErrorMessage;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,7 +31,6 @@ public class AdvertisementController {
     @GetMapping("/advertisements/{id}")
     public Mono<APIResponse<Advertisement>> getAdvertisement(@PathVariable("id") Integer id) {
         return advertisementService.getAdvertisementById(id)
-                .switchIfEmpty(Mono.error(() -> new APIException(ErrorMessage.ADVERTISEMENT_NOT_FOUND)))
                 .map(advertisement -> APIResponse.<Advertisement>builder()
                         .statusCode(200)
                         .message("success")
@@ -50,5 +47,11 @@ public class AdvertisementController {
                         .message("success")
                         .data(advertisement)
                         .build());
+    }
+
+    @PatchMapping("/advertisements/{id}/status/off")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public Mono<Advertisement> offAdvertisement(@PathVariable Integer id) {
+        return advertisementService.offAdvertisement(id);
     }
 }

@@ -5,8 +5,6 @@ import dev.reactive.flux.app.shop.dto.ModifyShopDto;
 import dev.reactive.flux.app.shop.model.Shop;
 import dev.reactive.flux.app.shop.service.ShopService;
 import dev.reactive.flux.common.dto.APIResponse;
-import dev.reactive.flux.common.error.APIException;
-import dev.reactive.flux.common.error.ErrorMessage;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,7 +32,6 @@ public class ShopController {
     @GetMapping("/shops/{id}")
     public Mono<APIResponse<Shop>> getShop(@PathVariable Integer id) {
         return shopService.getShopById(id)
-                .switchIfEmpty(Mono.error(() -> new APIException(ErrorMessage.SHOP_NOT_FOUND)))
                 .map(shops -> APIResponse.<Shop>builder()
                         .statusCode(200)
                         .message("success")
