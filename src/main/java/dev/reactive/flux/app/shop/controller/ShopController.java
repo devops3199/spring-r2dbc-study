@@ -30,8 +30,8 @@ public class ShopController {
     }
 
     @GetMapping("/shops/{id}")
-    public Mono<APIResponse<Shop>> getShop(@PathVariable Integer id) {
-        return shopService.getShopById(id)
+    public Mono<APIResponse<Shop>> getShopWithAdvertisements(@PathVariable Integer id) {
+        return shopService.getShopWithAdvertisements(id)
                 .map(shops -> APIResponse.<Shop>builder()
                         .statusCode(200)
                         .message("success")

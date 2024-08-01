@@ -1,8 +1,10 @@
 package dev.reactive.flux.app.shop.service;
 
+import dev.reactive.flux.app.advertisement.model.Advertisement;
 import dev.reactive.flux.app.shop.dto.CreateShopDto;
 import dev.reactive.flux.app.shop.dto.ModifyShopDto;
 import dev.reactive.flux.app.shop.model.Shop;
+import dev.reactive.flux.app.shop.repository.ShopCustomRepository;
 import dev.reactive.flux.app.shop.repository.ShopRepository;
 import dev.reactive.flux.common.error.APIException;
 import dev.reactive.flux.common.error.ErrorMessage;
@@ -19,6 +21,7 @@ import java.util.List;
 public class ShopService {
 
     private final ShopRepository shopRepository;
+    private final ShopCustomRepository shopCustomRepository;
 
     public Mono<List<Shop>> getShops() {
         return shopRepository.findAll().collectList();
@@ -40,5 +43,33 @@ public class ShopService {
                 var modified = shop.patch(dto);
                 return shopRepository.save(modified);
             });
+    }
+
+    public Mono<Shop> getShopWithAdvertisements(final Integer id) {
+        return shopCustomRepository.findWithAdvertisements(id)
+                .collectList()
+                .map(result -> {
+                    var advertisements = result.stream()
+                            .map(dto -> Advertisement.builder()
+                                    .id(dto.advertisementId())
+                                    .shopId(dto.shopId())
+                                    .name(dto.advertisementName())
+                                    .category(dto.advertisementCategory())
+                                    .status(dto.advertisementStatus())
+                                    .startedAt(dto.advertisementStartedAt())
+                                    .endedAt(dto.advertisementEndedAt())
+                                    .build())
+                            .toList();
+
+                    var shop = Shop.builder()
+                            .id(result.get(0).shopId())
+                            .name(result.get(0).shopName())
+                            .status(result.get(0).shopStatus())
+                            .createdAt(result.get(0).shopCreatedAt())
+                            .advertisements(advertisements)
+                            .build();
+
+                   return shop;
+                });
     }
 }
