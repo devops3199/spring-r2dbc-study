@@ -16,6 +16,7 @@ import java.time.ZonedDateTime;
 public class ShopCustomRepository {
 
     private final DatabaseClient databaseClient;
+    private final String SHOP_ID = "shopId";
 
     public Flux<ShopWithAdvertisementsDto> findWithAdvertisements(final Integer shopId) {
         final String joinQuery = """
@@ -36,7 +37,7 @@ public class ShopCustomRepository {
                             """;
 
         return databaseClient.sql(joinQuery)
-                .bind("shopId", shopId)
+                .bind(SHOP_ID, shopId)
                 .fetch().all()
                 .map(row -> ShopWithAdvertisementsDto.builder()
                         .shopId((Integer) row.get("shopId"))
