@@ -16,8 +16,6 @@ public record CreateAdvertisementDto(
         String name,
         @NotNull(message = "광고 카테고리 필수")
         AdvertisementCategory category,
-        @NotNull(message = "광고 상태 필수")
-        AdvertisementStatus status,
         @NotNull(message = "광고 시작일")
         LocalDateTime startedAt,
         @NotNull(message = "광고 종료일")
@@ -28,7 +26,7 @@ public record CreateAdvertisementDto(
                 .shopId(shopId)
                 .name(name)
                 .category(category)
-                .status(status)
+                .status(AdvertisementStatus.READY)
                 .startedAt(startedAt)
                 .endedAt(endedAt)
                 .build();
