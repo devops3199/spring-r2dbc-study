@@ -61,15 +61,13 @@ public class ShopService {
                                     .build())
                             .toList();
 
-                    var shop = Shop.builder()
+                    return Shop.builder()
                             .id(result.get(0).shopId())
                             .name(result.get(0).shopName())
                             .status(result.get(0).shopStatus())
                             .createdAt(result.get(0).shopCreatedAt())
                             .advertisements(advertisements)
                             .build();
-
-                   return shop;
                 });
     }
 }
